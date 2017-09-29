@@ -229,6 +229,21 @@ extern NSString* const RCDeviceCapabilityClientNameKey;
 // To be used internally by the library -not for application usage
 - (void)clearCurrentConnection;
 
+
+/**
+ *  Register the application for the push notifications
+ * <b>firendly-name</b>: name of the client application
+ * <b>username"</b>: username, for example: johndoe@telestax.com
+ * <b>password</b>: password for an account<br>
+ * <b>token</b>: push notification token from the
+ * <b>rescomm-account-email</b> account's email
+ * <b>push-certificate-public-path</b>: Path where exported APN's public certificate file is installed inside the App bundle.
+ * <b>push-certificate-private-path</b>: Path where exported APN's private RSA certificate file is installed inside the App bundle.
+ * The certificates are needed in order to receive push notifications. The server is using them to send the push notification to device.
+ * application, if its production it should be set to NO.
+ */
+- (void)registerPushToken:(NSDictionary*)parameters;
+
 /* DEBUG:
 -(void)startSofia;
 -(void)stopSofia;
