@@ -23,6 +23,7 @@
 
 /* Begin PBXBuildFile section */
 		25540A587DE159FD7C5868B7 /* libPods-restcomm-olympus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A37AC7F63EC312A5477FCA /* libPods-restcomm-olympus.a */; };
+		A937214F1F8670890052F16D /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A937214E1F8670880052F16D /* PushKit.framework */; };
 		A94A1B7D1F6A7D840034352E /* bug-grey-icon-25x25@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A94A1B7B1F6A7D840034352E /* bug-grey-icon-25x25@3x.png */; };
 		A94A1B7E1F6A7D840034352E /* bug-grey-icon-25x25@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A94A1B7C1F6A7D840034352E /* bug-grey-icon-25x25@2x.png */; };
 		A94A1B811F6A7E160034352E /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A94A1B7F1F6A7E160034352E /* BugReportViewController.m */; };
@@ -232,6 +233,7 @@
 /* Begin PBXFileReference section */
 		84A37AC7F63EC312A5477FCA /* libPods-restcomm-olympus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-restcomm-olympus.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		997FE8A62564462D28D6522C /* Pods-restcomm-olympus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-restcomm-olympus.release.xcconfig"; path = "Pods/Target Support Files/Pods-restcomm-olympus/Pods-restcomm-olympus.release.xcconfig"; sourceTree = "<group>"; };
+		A937214E1F8670880052F16D /* PushKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushKit.framework; path = System/Library/Frameworks/PushKit.framework; sourceTree = SDKROOT; };
 		A94A1B7B1F6A7D840034352E /* bug-grey-icon-25x25@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bug-grey-icon-25x25@3x.png"; sourceTree = "<group>"; };
 		A94A1B7C1F6A7D840034352E /* bug-grey-icon-25x25@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bug-grey-icon-25x25@2x.png"; sourceTree = "<group>"; };
 		A94A1B7F1F6A7E160034352E /* BugReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugReportViewController.m; sourceTree = "<group>"; };
@@ -451,6 +453,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A937214F1F8670890052F16D /* PushKit.framework in Frameworks */,
 				A9A117F41F7726DD000A83B3 /* UserNotifications.framework in Frameworks */,
 				A94A1B851F6A7E790034352E /* MessageUI.framework in Frameworks */,
 				A9CA4D831F5F33380005A553 /* Contacts.framework in Frameworks */,
@@ -601,6 +604,7 @@
 		AE79D31819BC8DAD0023306C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A937214E1F8670880052F16D /* PushKit.framework */,
 				A9A117F31F7726DC000A83B3 /* UserNotifications.framework */,
 				A94A1B841F6A7E790034352E /* MessageUI.framework */,
 				A94A1B821F6A7E330034352E /* Messages.framework */,

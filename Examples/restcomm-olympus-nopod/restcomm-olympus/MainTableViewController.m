@@ -37,7 +37,7 @@
 #import "AppDelegate.h"
 
 
-@interface MainTableViewController () 
+@interface MainTableViewController ()
 
 @property (nonatomic, strong) CNContactStore *contactsStore;
 @property (nonatomic, strong) UIActivityIndicatorView *spinner;
@@ -49,7 +49,7 @@
 @end
 
 @implementation MainTableViewController{
-   AppDelegate *appDelegate;
+    AppDelegate *appDelegate;
 }
 
 - (void)viewDidLoad {
@@ -98,19 +98,29 @@
     self.searchController.searchBar.delegate = self;
     self.searchController.dimsBackgroundDuringPresentation = NO;
     self.definesPresentationContext = YES;
-
+    
     [self.searchController.searchBar sizeToFit];
     self.tableView.tableHeaderView = self.searchController.searchBar;
     
     self.contactsStore = [[CNContactStore alloc] init];
-
+    
     //define spinner
     self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     //get contacts first time
     [self checkContactsAccess];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
     
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    // check connectivity
+    [self updateConnectivityState:appDelegate.device.state
+              andConnectivityType:appDelegate.device.connectivityType
+                         withText:@""];
+    
+    //notification handled from app delegate
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateStatusNotification:)
                                                  name:@"UpdateConnectivityStatus"
@@ -124,6 +134,10 @@
     
 }
 
+- (void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -225,7 +239,7 @@
     cell.accessoryType = UITableViewCellAccessoryDetailButton;
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-
+    
     [button addTarget:self action:@selector(checkButtonTapped:event:) forControlEvents:UIControlEventTouchUpInside];
     cell.backgroundColor = [UIColor clearColor];
     cell.accessoryView = button;
@@ -330,7 +344,7 @@
             [messageViewController.parameters setObject:username forKey:@"username"];
         }
     }
-  
+    
     if ([segue.identifier isEqualToString:@"invoke-details"]) {
         ContactDetailsTableViewController *contactDetailsTableViewController = [segue destinationViewController];
         contactDetailsTableViewController.device = appDelegate.device;
@@ -353,7 +367,7 @@
 
 - (void)invokeCreateContact
 {
-   [self performSegueWithIdentifier:@"invoke-create-contact" sender:nil];
+    [self performSegueWithIdentifier:@"invoke-create-contact" sender:nil];
 }
 
 
@@ -384,21 +398,21 @@
     [self showSpinner];
     [self requestContactsAccessWithHandler:^(BOOL granted) {
         if (granted) {
-                CNContactFetchRequest *request = [[CNContactFetchRequest alloc] initWithKeysToFetch:
-                                                  @[CNContactFamilyNameKey, CNContactGivenNameKey,
-                                                    CNContactNamePrefixKey, CNContactMiddleNameKey, CNContactPhoneNumbersKey]];
+            CNContactFetchRequest *request = [[CNContactFetchRequest alloc] initWithKeysToFetch:
+                                              @[CNContactFamilyNameKey, CNContactGivenNameKey,
+                                                CNContactNamePrefixKey, CNContactMiddleNameKey, CNContactPhoneNumbersKey]];
+            
+            [self.contactsStore enumerateContactsWithFetchRequest:request error:nil usingBlock:^(CNContact * _Nonnull contact, BOOL * _Nonnull stop) {
                 
-                [self.contactsStore enumerateContactsWithFetchRequest:request error:nil usingBlock:^(CNContact * _Nonnull contact, BOOL * _Nonnull stop) {
-                    
-                    NSMutableArray *phoneNumbers = [[NSMutableArray alloc] init];
-                    LocalContact *localContact = [[LocalContact alloc] init];
-                    localContact.firstName = contact.givenName;
-                    localContact.lastName = contact.familyName;
-                    localContact.phoneBookNumber = YES;
-                  
-                    if (contact.phoneNumbers.count > 0 &&
-                        ((localContact.firstName && localContact.firstName.length > 0) ||
-                        (localContact.lastName && localContact.lastName.length > 0))) {
+                NSMutableArray *phoneNumbers = [[NSMutableArray alloc] init];
+                LocalContact *localContact = [[LocalContact alloc] init];
+                localContact.firstName = contact.givenName;
+                localContact.lastName = contact.familyName;
+                localContact.phoneBookNumber = YES;
+                
+                if (contact.phoneNumbers.count > 0 &&
+                    ((localContact.firstName && localContact.firstName.length > 0) ||
+                     (localContact.lastName && localContact.lastName.length > 0))) {
                         for (int i=0; i<contact.phoneNumbers.count; i++){
                             //add numbers to array
                             CNPhoneNumber *phoneNumber = (CNPhoneNumber *)contact.phoneNumbers[i].value;
@@ -407,13 +421,13 @@
                         localContact.phoneNumbers = [NSArray arrayWithArray:phoneNumbers];
                         [Utils addContact:localContact];
                     }
-                    
-                }];
                 
-                dispatch_async( dispatch_get_main_queue(), ^{
-                    [self hideSpinner];
-                    [self reloadData];
-                });
+            }];
+            
+            dispatch_async( dispatch_get_main_queue(), ^{
+                [self hideSpinner];
+                [self reloadData];
+            });
         } else {
             dispatch_async( dispatch_get_main_queue(), ^{
                 [self hideSpinner];
@@ -455,7 +469,7 @@
     [self.spinner removeFromSuperview];
 }
 
-#pragma mark - Loader 
+#pragma mark - Loader
 
 - (void)reloadData{
     self.contactsData = [Utils getSortedContacts];

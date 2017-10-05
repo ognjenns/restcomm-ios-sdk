@@ -111,10 +111,12 @@
 	<string>This App requires contacts access</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>This App uses the microphone for audio and video calls</string>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>remote-notification</string>
-	</array>
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>fetch</string>
+        <string>remote-notification</string>
+        <string>voip</string>
+    </array>
 	<key>UIMainStoryboardFile</key>
 	<string>Main_Universal</string>
 	<key>UIMainStoryboardFile~ipad</key>

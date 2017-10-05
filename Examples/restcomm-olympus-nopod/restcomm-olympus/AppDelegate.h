@@ -28,15 +28,17 @@
 #import "ContactDetailsTableViewController.h"
 #import "SipSettingsTableViewController.h"
 #import "RCUtilities.h"
+#import <PushKit/PushKit.h>
 
-@interface AppDelegate : UIResponder <RCDeviceDelegate, UIApplicationDelegate, UNUserNotificationCenterDelegate,CallDelegate,
+@interface AppDelegate : UIResponder <RCDeviceDelegate, UIApplicationDelegate, PKPushRegistryDelegate, CallDelegate,
 ContactUpdateDelegate, ContactDetailsDelegate, MessageDelegate, SipSettingsDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property BOOL isInitialized;
-@property BOOL isRegistered;
 @property (nonatomic,retain) RCDevice* device;
 @property NSMutableDictionary * parameters;
 @property RCDeviceState previousDeviceState;
 
+- (RCDevice *)registerRCDevice;
+
 @end
+
