@@ -151,8 +151,15 @@
         }
         if ([[self.parameters valueForKey:@"invoke-view-type"] isEqualToString:@"receive-call"]) {
             //NSString *username = [RCUtilities usernameFromUri:[self.parameters objectForKey:@"username"]];
+            //check is it from notification, if it is anser it
             self.callLabel.text = [NSString stringWithFormat:@"Call from %@", [self.parameters objectForKey:@"alias"]];
-            self.statusLabel.text = @"Call received";
+            if (self.fromNotification){
+                [self answer:self.isVideoCall];
+            } else {
+                self.statusLabel.text = @"Call received";
+            }
+            
+            
         }
     }
 }
@@ -202,7 +209,7 @@
         // hide video/audio buttons
         self.videoButton.hidden = YES;
         self.audioButton.hidden = YES;
-
+        
         self.statusLabel.text = @"Answering Call...";
         if (allowVideo) {
             [self.pendingIncomingConnection accept:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES]
@@ -293,7 +300,7 @@
     self.muteAudioButton.hidden = NO;
     self.muteVideoButton.hidden = NO;
     self.keypadButton.hidden = NO;
-
+    
     self.durationLabel.hidden = NO;
     [self timerAction];
 }
@@ -307,7 +314,7 @@
         self.pendingIncomingConnection = nil;
         self.connection = nil;
         [self stopVideoRendering];
-
+        
         [self.presentingViewController dismissViewControllerAnimated:YES
                                                           completion:nil];
     }
@@ -320,11 +327,11 @@
     self.connection = nil;
     self.pendingIncomingConnection = nil;
     [self stopVideoRendering];
-
+    
     // hide mute video/audio buttons
     self.muteAudioButton.hidden = YES;
     self.muteVideoButton.hidden = YES;
-
+    
     if (!self.pendingError) {
         // if we have presented the digits view controller need to dismiss both
         if (self.presentedViewController) {
@@ -345,7 +352,7 @@
         if (self.presentedViewController) {
             // change the value of invoke-view-type cause if we don't a new call will be made due to viewDidAppear
             [self.parameters setValue:@"return-from-keypad" forKey:@"invoke-view-type"];
-
+            
             [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
         }
     }
@@ -359,11 +366,11 @@
 {
     NSLog(@"connectionDidGetDeclined");
     self.statusLabel.text = @"Got Declined";
-
+    
     self.connection = nil;
     self.pendingIncomingConnection = nil;
     [self stopVideoRendering];
-
+    
     [self.presentingViewController dismissViewControllerAnimated:YES
                                                       completion:nil];
 }
@@ -436,7 +443,7 @@
 - (void)timerAction
 {
     self.durationLabel.text = [NSString stringWithFormat:@"%02d:%02d:%02d", self.secondsElapsed / 3600, (self.secondsElapsed % 3600) / 60,
-                  (self.secondsElapsed % 3600) % 60];
+                               (self.secondsElapsed % 3600) % 60];
     self.secondsElapsed++;
     
     if (self.connection && self.connection.state == RCConnectionStateConnected) {

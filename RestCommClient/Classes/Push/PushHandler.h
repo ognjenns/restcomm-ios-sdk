@@ -17,16 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  * For questions related to commercial use licensing, please contact sales@telestax.com.
- *
  */
 
-#import <UIKit/UIKit.h>
 
-#import "RestCommClient.h"
-#import "MessageTableViewController.h"
-#import "ContactUpdateTableViewController.h"
-#import "ContactDetailsTableViewController.h"
-#import "SipSettingsTableViewController.h"
+#import <Foundation/Foundation.h>
 
-@interface MainTableViewController : UITableViewController <UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating>
+@interface PushHandler : NSObject
+
+- (id)initWithParameters:(NSDictionary *)parameters;
+
+- (void)registerDevice;
+
 @end
